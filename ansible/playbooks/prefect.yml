@@ -1,0 +1,39 @@
+---
+- name: Install and configure Prefect
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Install Python and pip
+      pacman:
+        name:
+          - python
+          - python-pip
+        state: present
+
+    - name: Install Prefect
+      pip:
+        name: prefect
+        state: latest
+
+    - name: Create Prefect configuration directory
+      file:
+        path: /home/user/.prefect
+        state: directory
+        owner: user
+        group: user
+        mode: '0755'
+
+    - name: Copy Prefect configuration file
+      copy:
+        src: /opt/autohost/configs/prefect.yaml
+        dest: /home/user/.prefect/prefect.yaml
+        owner: user
+        group: user
+        mode: '0644'
+
+    - name: Start Prefect server
+      command: prefect server start
+      async: 3600
+      poll: 0
+      become_user: user

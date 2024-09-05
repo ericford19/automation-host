@@ -1,0 +1,27 @@
+---
+- name: Install and configure Hyprdots
+  hosts: localhost
+  become: yes
+  become_user: user
+
+  tasks:
+    - name: Clone Hyprdots repository
+      git:
+        repo: 'https://github.com/prasanthrangan/hyprdots'
+        dest: /home/user/hyprdots
+        version: main
+
+    - name: Run Hyprdots installation script
+      command: ./install.sh
+      args:
+        chdir: /home/user/hyprdots
+      environment:
+        HOME: /home/user
+
+    - name: Copy custom Hyprdots configuration
+      copy:
+        src: /opt/autohost/configs/hyprdots.conf
+        dest: /home/user/.config/hypr/hyprdots.conf
+        owner: user
+        group: user
+        mode: '0644'

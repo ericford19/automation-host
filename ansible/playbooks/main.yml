@@ -1,0 +1,21 @@
+---
+- name: Configure Arch Linux with Hyprdots and Prefect
+  hosts: localhost
+  become: yes
+
+  roles:
+    - hyprdots
+    - prefect
+
+  tasks:
+    - name: Ensure all services are started and enabled
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - NetworkManager
+        - sddm  # Assuming you're using SDDM as the display manager
+
+    - name: Reboot the system
+      reboot:
