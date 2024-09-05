@@ -10,8 +10,8 @@ This repository contains scripts and configurations for automatically setting up
 
 ```bash
 pacman -Sy git
-git clone https://github.com/your-username/autohost.git
-cd autohost/scripts
+git clone https://github.com/ericford19/automation-host.git
+cd automation-host/scripts
 chmod +x install.sh
 ./install.sh
 ```
