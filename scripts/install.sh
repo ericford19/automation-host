@@ -8,7 +8,7 @@ echo "Starting Arch Linux installation..."
 cd "$(dirname "$0")"
 
 # Run archinstall with our configuration
-archinstall --config archinstall_config.json --disk-layout disk_layout.json
+archinstall --config user_configuration.json --creds user_credentials.json
 
 # After installation, chroot into the new system to perform post-install tasks
 arch-chroot /mnt <<EOF
