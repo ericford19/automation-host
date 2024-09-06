@@ -1,0 +1,32 @@
+# 1. initial_install.yml
+---
+- name: Initial Arch Linux Installation
+  hosts: localhost
+  become: yes
+  vars:
+    archinstall_config: "/scripts/user_configuration.json"
+    archinstall_creds: "scripts/user_credentials.json"
+
+  tasks:
+    - name: Verify network connection
+      wait_for_connection:
+        timeout: 300
+      
+    - name: Run archinstall
+      command: >
+        archinstall 
+        --config {{ archinstall_config }}
+        --creds {{ archinstall_creds }}
+        --silent
+      args:
+        creates: /mnt/etc/hostname
+      register: archinstall_result
+      failed_when: archinstall_result.rc != 0
+
+    - name: Enable NetworkManager
+      systemd:
+        name: NetworkManager
+        enabled: yes
+        state: started
+      when: archinstall_result.changed
+

@@ -1,21 +1,12 @@
+# 2. main.yml
 ---
-- name: Configure Arch Linux with Hyprdots and Prefect
+- name: Arch Linux Configuration
   hosts: localhost
   become: yes
 
   roles:
-    - hyprdots
-    - prefect
-
-  tasks:
-    - name: Ensure all services are started and enabled
-      systemd:
-        name: "{{ item }}"
-        state: started
-        enabled: yes
-      loop:
-        - NetworkManager
-        - sddm  # Assuming you're using SDDM as the display manager
-
-    - name: Reboot the system
-      reboot:
+    - role: initial_install
+    - role: password_manager_setup
+    - role: ssh_setup
+    - role: hyprdots_installation
+    - role: backup_creation

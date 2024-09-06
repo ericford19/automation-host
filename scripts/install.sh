@@ -19,7 +19,7 @@ pacman -Sy --noconfirm git ansible
 git clone https://github.com/ericford19/automation-host.git /opt/automation-host
 
 # Run the main Ansible playbook
-cd /opt/automation-host/ansible/playbooks
-ansible-playbook main.yml
+cd /opt/automation-host
+ansible-playbook /ansible/playbooks/main.yml
 
 echo "Installation complete. You can now reboot into your new Arch Linux system."
