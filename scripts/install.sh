@@ -1,30 +1,25 @@
 #!/bin/bash
-
 set -e
 
-echo "Starting Arch Linux installation..."
+echo "Starting Arch Linux installation process..."
 
 # Ensure we're in the right directory
 cd "$(dirname "$0")"
 
-# Run archinstall with our configuration
-archinstall --config user_configuration.json --creds user_credentials.json
+# Verify network connection
+if ! ping -c 1 archlinux.org &> /dev/null; then
+    echo "Network connection not available. Please connect and try again."
+    exit 1
+fi
 
-# After installation, chroot into the new system to perform post-install tasks
-arch-chroot /mnt <<EOF
-# Enable NetworkManager
-systemctl enable NetworkManager
+# Install git and ansible
+pacman -Sy --noconfirm git ansible
 
-# Install ansible
-pacman -S --noconfirm ansible
+# Clone our repository
+git clone https://github.com/ericford19/automation-host.git /opt/automation-host
 
-# Clone our repository into the new system
-git clone https://github.com/your-username/autohost.git /opt/autohost
-
-# Run our ansible playbook
-cd /opt/autohost/ansible
-ansible-playbook playbooks/main.yml
-
-EOF
+# Run the main Ansible playbook
+cd /opt/automation-host/ansible/playbooks
+ansible-playbook main.yml
 
 echo "Installation complete. You can now reboot into your new Arch Linux system."
