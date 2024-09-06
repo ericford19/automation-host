@@ -17,12 +17,13 @@
                         "btrfs": [],
                         "dev_path": null,
                         "flags": [
-                            "Boot"
+                            "Boot",
+                            "ESP"
                         ],
                         "fs_type": "fat32",
                         "mount_options": [],
                         "mountpoint": "/boot",
-                        "obj_id": "660a8e10-7b36-49f7-91b7-9d296f4f3f9b",
+                        "obj_id": "3142391c-23bf-437b-a1d2-d758d8d77859",
                         "size": {
                             "sector_size": {
                                 "unit": "B",
@@ -37,7 +38,7 @@
                                 "value": 512
                             },
                             "unit": "MiB",
-                            "value": 3
+                            "value": 1
                         },
                         "status": "create",
                         "type": "primary"
@@ -49,14 +50,14 @@
                         "fs_type": "ext4",
                         "mount_options": [],
                         "mountpoint": "/",
-                        "obj_id": "71ec56ce-38df-4261-b2fb-ba009a134ba8",
+                        "obj_id": "56e5322d-e49b-4751-970d-e92095d3a26e",
                         "size": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 7513047040
+                            "unit": "GiB",
+                            "value": 20
                         },
                         "start": {
                             "sector_size": {
@@ -64,7 +65,34 @@
                                 "value": 512
                             },
                             "unit": "B",
-                            "value": 1076887552
+                            "value": 1074790400
+                        },
+                        "status": "create",
+                        "type": "primary"
+                    },
+                    {
+                        "btrfs": [],
+                        "dev_path": null,
+                        "flags": [],
+                        "fs_type": "ext4",
+                        "mount_options": [],
+                        "mountpoint": "/home",
+                        "obj_id": "584d0281-d9dd-4a96-9ea1-f563f84c01d5",
+                        "size": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "B",
+                            "value": 46168801280
+                        },
+                        "start": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "B",
+                            "value": 22549626880
                         },
                         "status": "create",
                         "type": "primary"
@@ -72,54 +100,7 @@
                 ],
                 "wipe": true
             }
-        ],
-        "lvm_config": {
-            "config_type": "default",
-            "vol_groups": [
-                {
-                    "lvm_pvs": [
-                        "71ec56ce-38df-4261-b2fb-ba009a134ba8"
-                    ],
-                    "name": "ArchinstallVg",
-                    "volumes": [
-                        {
-                            "btrfs": [],
-                            "fs_type": "ext4",
-                            "length": {
-                                "sector_size": {
-                                    "unit": "B",
-                                    "value": 512
-                                },
-                                "unit": "GiB",
-                                "value": 20
-                            },
-                            "mount_options": [],
-                            "mountpoint": "/",
-                            "name": "root",
-                            "obj_id": "734419c6-9edc-4fe6-8a4d-fd7fa0c535d3",
-                            "status": "create"
-                        },
-                        {
-                            "btrfs": [],
-                            "fs_type": "ext4",
-                            "length": {
-                                "sector_size": {
-                                    "unit": "B",
-                                    "value": 512
-                                },
-                                "unit": "B",
-                                "value": 13961789440
-                            },
-                            "mount_options": [],
-                            "mountpoint": "/home",
-                            "name": "home",
-                            "obj_id": "5352fe06-ddbf-4b23-8348-b6c4bfb856d5",
-                            "status": "create"
-                        }
-                    ]
-                }
-            ]
-        }
+        ]
     },
     "disk_encryption": null,
     "hostname": "archlinux",
@@ -262,7 +243,7 @@
         "type": "nm"
     },
     "no_pkg_lookups": false,
-    "ntp": false,
+    "ntp": true,
     "offline": false,
     "packages": [
         "nano",
@@ -278,7 +259,7 @@
         "profile": {
             "custom_settings": {
                 "Hyprland": {
-                    "seat_access": "polkit"
+                    "seat_access": null
                 }
             },
             "details": [
@@ -292,7 +273,7 @@
     "skip_ntp": false,
     "skip_version_check": false,
     "swap": true,
-    "timezone": "UTC",
+    "timezone": "US/Eastern",
     "uki": false,
     "version": "2.8.6"
 }
