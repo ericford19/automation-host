@@ -2,7 +2,7 @@
 - name: Install and configure Hyprdots
   hosts: localhost
   become: yes
-  become_user: user
+  become_user: userdh
 
   tasks:
     - name: Clone Hyprdots repository
