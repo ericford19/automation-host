@@ -11,11 +11,10 @@
         "config_type": "default_layout",
         "device_modifications": [
         {
-            "device": "/dev/sda",
+            "device": "/dev/vda",
             "partitions": [
             {
                 "btrfs": [],
-                "dev_path": null,
                 "flags": [
                 "Boot",
                 "ESP"
@@ -36,7 +35,6 @@
             },
             {
                 "btrfs": [],
-                "dev_path": null,
                 "flags": [],
                 "fs_type": "ext4",
                 "mount_options": [],
@@ -50,7 +48,6 @@
             },
             {
                 "btrfs": [],
-                "dev_path": null,
                 "flags": [],
                 "fs_type": "ext4",
                 "mount_options": [],
