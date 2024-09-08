@@ -5,7 +5,7 @@
   become: yes
 
   roles:
-    - role: initial_install
+    - role: arch_install
     - role: password_manager_setup
     - role: ssh_setup
     - role: hyprdots_installation

@@ -1,11 +1,10 @@
-# 1. initial_install.yml
 ---
 - name: Initial Arch Linux Installation
   hosts: localhost
   become: yes
   vars:
     archinstall_config: "/scripts/user_configuration.json"
-    archinstall_creds: "scripts/user_credentials.json"
+    archinstall_creds: "/scripts/user_credentials.json"
 
   tasks:
     - name: Verify network connection
