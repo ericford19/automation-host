@@ -8,62 +8,10 @@
     "config_version": "2.8.6",
     "debug": false,
     "disk_config": {
-        "config_type": "default_layout",
-        "device_modifications": [
-        {
-            "device": "/dev/vda",
-            "partitions": [
-            {
-                "btrfs": [],
-                "flags": [
-                "Boot",
-                "ESP"
-                ],
-                "fs_type": "fat32",
-                "mount_options": [],
-                "mountpoint": "/boot",
-                "size": {
-                "unit": "%",
-                "value": 2
-                },
-                "start": {
-                "unit": "MiB",
-                "value": 1
-                },
-                "status": "create",
-                "type": "primary"
-            },
-            {
-                "btrfs": [],
-                "flags": [],
-                "fs_type": "ext4",
-                "mount_options": [],
-                "mountpoint": "/",
-                "size": {
-                "unit": "%",
-                "value": 40
-                },
-                "status": "create",
-                "type": "primary"
-            },
-            {
-                "btrfs": [],
-                "flags": [],
-                "fs_type": "ext4",
-                "mount_options": [],
-                "mountpoint": "/home",
-                "size": {
-                "unit": "%",
-                "value": 58
-                },
-                "status": "create",
-                "type": "primary"
-            }
-            ],
-            "wipe": true
-        }
-        ]
+        "config_type": "auto",
+        "device_modifications": []
     },
+    "filesystem": "ext4",
     "disk_encryption": null,
     "hostname": "archlinux",
     "kernels": [
