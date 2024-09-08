@@ -1,6 +1,5 @@
-# 2. main.yml
 ---
-- name: Arch Linux Configuration
+- name: Main
   hosts: localhost
   become: yes
 

@@ -1,0 +1,95 @@
+---
+- name: Check disk state and prepare for Arch Linux installation
+  hosts: localhost
+  become: yes
+  vars:
+    primary_disk: /dev/vda
+    desired_partitions:
+      - { mountpoint: "/boot", size_percent: 2, fs_type: "fat32", flags: ["Boot", "ESP"] }
+      - { mountpoint: "/", size_percent: 40, fs_type: "ext4" }
+      - { mountpoint: "/home", size_percent: 58, fs_type: "ext4" }
+
+  tasks:
+    - name: Get disk information
+      command: lsblk -ndo NAME,SIZE,TYPE,MOUNTPOINT {{ primary_disk }}
+      register: disk_info
+      changed_when: false
+
+    - name: Display disk information
+      debug:
+        var: disk_info.stdout_lines
+
+    - name: Check if disk is in use
+      command: lsblk -ndo MOUNTPOINT {{ primary_disk }}
+      register: mount_check
+      changed_when: false
+
+    - name: Check existing partition table
+      command: parted -s {{ primary_disk }} print
+      register: partition_info
+      changed_when: false
+      failed_when: false
+
+    - name: Set fact for disk usage
+      set_fact:
+        disk_in_use: "{{ mount_check.stdout | trim != '' }}"
+
+    - name: Set fact for existing partitions
+      set_fact:
+        has_partitions: "{{ 'Partition Table: gpt' in partition_info.stdout }}"
+
+    - name: Display disk usage status
+      debug:
+        msg: "Disk is {{ 'in use' if disk_in_use else 'not in use' }}"
+
+    - name: Display partition status
+      debug:
+        msg: "Disk {{ 'has' if has_partitions else 'does not have' }} existing partitions"
+
+    - name: Check if partitioning is needed
+      set_fact:
+        needs_partitioning: "{{ not disk_in_use and not has_partitions }}"
+
+    - name: Display partitioning need
+      debug:
+        msg: "Disk {{ 'needs' if needs_partitioning else 'does not need' }} partitioning"
+
+    - name: Create GPT partition table
+      command: parted -s {{ primary_disk }} mklabel gpt
+      when: needs_partitioning
+
+    - name: Create partitions
+      parted:
+        device: "{{ primary_disk }}"
+        number: "{{ item.0 + 1 }}"
+        state: present
+        part_start: "{{ '1MiB' if item.0 == 0 else item.1.size_percent|string + '%' }}"
+        part_end: "{{ (item.1.size_percent + (item.0|int * 100 / desired_partitions|length))|string + '%' }}"
+        flags: "{{ item.1.flags|default([]) }}"
+      loop: "{{ desired_partitions | list | enumerate }}"
+      when: needs_partitioning
+
+    - name: Format partitions
+      filesystem:
+        fstype: "{{ item.fs_type }}"
+        dev: "{{ primary_disk }}{{ item.0 + 1 }}"
+      loop: "{{ desired_partitions | list | enumerate }}"
+      when: needs_partitioning
+
+    - name: Mount partitions
+      mount:
+        path: "{{ item.mountpoint }}"
+        src: "{{ primary_disk }}{{ item.0 + 1 }}"
+        fstype: "{{ item.fs_type }}"
+        state: mounted
+      loop: "{{ desired_partitions | list | enumerate }}"
+      when: needs_partitioning
+
+    - name: Display final partition information
+      command: lsblk {{ primary_disk }}
+      register: final_partition_info
+      changed_when: false
+
+    - name: Show final partition layout
+      debug:
+        var: final_partition_info.stdout_lines
